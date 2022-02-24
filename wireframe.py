@@ -22,7 +22,7 @@ class Wireframe(object):
         nodes = data["nodes"]
 
         # store the edges using a simple adjacency list.
-        self.adj_list = {}
+        self._adj_list = {}
 
         for edge in data["edges"]:
             start = nodes.index(edge["start"])
