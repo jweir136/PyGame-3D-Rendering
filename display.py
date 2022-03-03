@@ -1,7 +1,6 @@
 ##### IMPORT THE REQUIRED MODULES #####
 import wireframe
 import pygame
-import json
 
 class Display(object):
     """
