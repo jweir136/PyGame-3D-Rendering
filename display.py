@@ -34,7 +34,12 @@ class Display(object):
     """
     def _addWireframe(self, name, filename):
         wireframe_object = wireframe.Wireframe(filename)
-        self.wireframe[name] = wireframe_object
+        self.wireframes[name] = wireframe_object
+
+    def _rotateAll(self, axis, theta):
+        rotateFunction = 'rotate' + axis
+        for wireframe_obj in self.wireframes:
+            getattr(self.wireframes[wireframe_obj], rotateFunction)(theta)
 
     def display(self):
         # Fill in the screen background
@@ -47,8 +52,8 @@ class Display(object):
 
             for key in wireframe_object._adj_list.keys():
                 start = wireframe_object.nodes[int(key)]
-                for idx in wireframe._adj_list[key]:
-                    end = wireframe.nodes[idx]
+                for idx in wireframe_object._adj_list[key]:
+                    end = wireframe_object.nodes[idx]
                     pygame.draw.aaline(self.screen, self.edgeColor, (start[0], start[1]), (end[0], end[1]), 1)
 
 
@@ -59,7 +64,36 @@ class Display(object):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT:
+                        for wireframe in self.wireframes:
+                            self.wireframes[wireframe].translate("x", -10)
+                    elif event.key == pygame.K_RIGHT:
+                        for wireframe in self.wireframes:       
+                            self.wireframes[wireframe].translate("x", 10)
+                    elif event.key == pygame.K_UP:
+                        for wireframe in self.wireframes:
+                            self.wireframes[wireframe].translate("y", -10)
+                    elif event.key == pygame.K_DOWN:
+                        for wireframe in self.wireframes:
+                            self.wireframes[wireframe].translate("y", 10)
+                    elif event.key == pygame.K_MINUS:
+                        for wireframe in self.wireframes:
+                            self.wireframes[wireframe].scale(0.8)
+                    elif event.key == pygame.K_EQUALS:
+                        for wireframe in self.wireframes:
+                            self.wireframes[wireframe].scale(1.25)
+                    elif event.key == pygame.K_q:
+                        self._rotateAll('X', 0.1)
+                    elif event.key == pygame.K_w:
+                        self._rotateAll('X', -0.1)
+                    elif event.key == pygame.K_a:
+                        self._rotateAll('Y', 0.1)
+                    elif event.key == pygame.K_s:
+                        self._rotateAll('Y', -0.1)
+                    elif event.key == pygame.K_z:
+                        pass
+
             self.screen.fill(self.background)
             self.display()
             pygame.display.flip()
