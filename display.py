@@ -35,6 +35,11 @@ class Display(object):
         wireframe_object = wireframe.Wireframe(filename)
         self.wireframes[name] = wireframe_object
 
+    def _addWireframeAndShift(self, name, filename, axis, shift):
+        wireframe_object = wireframe.Wireframe(filename)
+        wireframe_object.translate(axis, shift)
+        self.wireframes[name] = wireframe_object
+
     def _rotateAll(self, axis, theta):
         rotateFunction = 'rotate' + axis
         for wireframe_obj in self.wireframes:
